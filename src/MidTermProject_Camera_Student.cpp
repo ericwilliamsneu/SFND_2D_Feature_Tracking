@@ -89,9 +89,9 @@ int main(int argc, const char *argv[])
         {
             detKeypointsShiTomasi(keypoints, imgGray, false);
         }
-        else
+        else if (detectorType.compare("HARRIS") == 0)
         {
-            //...
+            detKeypointsHarris(keypoints, imgGray, bVis);
         }
         //// EOF STUDENT ASSIGNMENT
 
@@ -125,6 +125,16 @@ int main(int argc, const char *argv[])
         // push keypoints and descriptor for current frame to end of data buffer
         (dataBuffer.end() - 1)->keypoints = keypoints;
         cout << "#2 : DETECT KEYPOINTS done" << endl;
+
+        string windowName = "Matching keypoints between two camera images";
+        cv::namedWindow(windowName, 7);
+        cv::Mat matchImg;
+        cv::drawKeypoints(dataBuffer.back().cameraImg,dataBuffer.back().keypoints,matchImg);
+        cv::imshow(windowName, matchImg);
+        cout << "Press key to continue to next image" << endl;
+        cv::waitKey(0); // wait for key to be pressed
+
+        continue;
 
         /* EXTRACT KEYPOINT DESCRIPTORS */
 
