@@ -84,7 +84,7 @@ int main(int argc, const char *argv[])
         //// STUDENT ASSIGNMENT
         //// TASK MP.2 -> add the following keypoint detectors in file matching2D.cpp and enable string-based selection based on detectorType
         //// -> HARRIS, FAST, BRISK, ORB, AKAZE, SIFT
-
+        bVis = false;
         if (detectorType.compare("SHITOMASI") == 0)
         {
             detKeypointsShiTomasi(keypoints, imgGray, bVis);
@@ -114,7 +114,6 @@ int main(int argc, const char *argv[])
             detKeypointsSIFT(keypoints,imgGray,bVis);
         }
 
-        continue;
         //// EOF STUDENT ASSIGNMENT
 
         //// STUDENT ASSIGNMENT
@@ -125,9 +124,19 @@ int main(int argc, const char *argv[])
         cv::Rect vehicleRect(535, 180, 180, 150);
         if (bFocusOnVehicle)
         {
-            // ...
+            auto it = keypoints.begin();
+            while(it != keypoints.end())
+            {
+                if(vehicleRect.contains(it->pt)) ++it;
+                else it = keypoints.erase(it);
+            }
         }
 
+        if(bVis=true)
+        {
+            drawImgKeypoints(keypoints,img,"Keypoint Detection After Focus");
+        }
+        continue;
         //// EOF STUDENT ASSIGNMENT
 
         // optional : limit number of keypoints (helpful for debugging and learning)
